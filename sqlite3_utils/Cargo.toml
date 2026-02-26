@@ -5,10 +5,25 @@ edition = "2024"
 
 [dependencies]
 rusqlite = { version = "0.38.0", features = ["bundled"] }
+# libc provides standard C types
+libc = "0.2"
 
 [dev-dependencies]
 # Criterion for benchmarking
 criterion = "0.5"
+
+[lib]
+# "cdylib" generates a dynamic library for C/C++ to use
+# "staticlib" generates a static library
+# "rlib" keeps it usable as a standard Rust dependency
+# 
+# cdylib -> .so (Linux) / .dylib (macOS) / .dll (Windows)
+# staticlib -> .a (Unix) / .lib (Windows)
+# rlib -> Rust
+# 
+# cargo build -> target/debug/
+# cargo build --release -> target/release/
+crate-type = ["cdylib", "staticlib", "rlib"]
 
 [[bench]]
 name = "db_bench"

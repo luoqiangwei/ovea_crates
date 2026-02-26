@@ -544,6 +544,7 @@ name = "sqlite3_utils"
 version = "0.1.0"
 dependencies = [
  "criterion",
+ "libc",
  "rusqlite",
 ]
 

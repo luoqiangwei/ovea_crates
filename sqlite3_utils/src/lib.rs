@@ -2,6 +2,7 @@ use std::fs;
 use rusqlite::Connection;
 
 pub mod db_control;
+pub mod ffi;
 
 // --- Enums & Structs ---
 

@@ -12,3 +12,15 @@ Run standard unit tests:
 ```bash
 cargo test
 ```
+
+## Running examples/c_call_rust
+
+```bash
+cd examples/c_call_rust
+mkdir -p build
+cd build
+cmake ..
+make 
+./db_demo
+```
+

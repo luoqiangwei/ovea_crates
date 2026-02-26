@@ -1,0 +1,27 @@
+# cbindgen.toml
+
+# Set the language to C (defaults to C++ if not specified)
+language = "C"
+
+# Prevents the generation of C++ specific headers like <new>, <ostream>, etc.
+cpp_compat = false
+
+# Documentation style
+documentation_style = "c99"
+
+# Include guard macro name
+include_guard = "SQLITE3_UTILS_H"
+
+[export]
+# This ensures that even if you use structs in Rust, 
+# they are mapped correctly to C 'struct' keywords.
+include = ["DbConnection"]
+# prefix = ""
+# item_types = ["structs", "enums", "functions", "typedefs"]
+
+[parse]
+parse_deps = false
+include = ["src/ffi.rs"]
+
+[struct]
+
