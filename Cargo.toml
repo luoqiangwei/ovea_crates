@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "db_model_utils",
+    "sqlite3_utils",
+]
+resolver = "2"

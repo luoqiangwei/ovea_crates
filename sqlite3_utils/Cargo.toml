@@ -1,0 +1,15 @@
+[package]
+name = "sqlite3_utils"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+rusqlite = { version = "0.38.0", features = ["bundled"] }
+
+[dev-dependencies]
+# Criterion for benchmarking
+criterion = "0.5"
+
+[[bench]]
+name = "db_bench"
+harness = false
