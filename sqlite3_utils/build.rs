@@ -1,25 +1,32 @@
-// build.rs
+use std::env;
 use std::path::PathBuf;
 
 fn main() {
-    // 1. Trigger CMake build
-    // This returns the installation path (usually in target/debug/build/...)
-    let dst: PathBuf = cmake::Config::new("cpp_lib")
-        .build();
-
-    // 2. Tell Cargo where to find the library
-    // The 'lib' folder is where CMake usually puts build artifacts
+    // === 1. CMake Build Section ===
+    let dst = cmake::Config::new("cpp_lib").build();
     println!("cargo:rustc-link-search=native={}/lib", dst.display());
-    println!("cargo:rustc-link-search=native={}/lib64", dst.display());
+    println!("cargo:rustc-link-lib=static=my_math");
 
-    // 3. Link the library. 
-    // Here we link against the static version for easier testing
-    // println!("cargo:rustc-link-lib=static=my_math");
-    // dynamically link instead to test dynamic loading
-    println!("cargo:rustc-link-lib=dylib=my_math_dyn");
+    // === 2. Bindgen automatically generates parts ===
+    // Tell bindgen which header file we want to scan
+    let header_path = "cpp_lib/include/my_math.h";
 
-    // Re-run if any C file changes
+    let bindings = bindgen::Builder::default()
+        .header(header_path)
+        // Tell bindgen to regenerate if the header file changes
+        .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
+        // Start generating bindings
+        .generate()
+        .expect("Unable to generate bindings");
+
+    // Write the generated code to OUT_DIR in the target directory
+    // let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
+    let out_path = PathBuf::from("src");
+    bindings
+        .write_to_file(out_path.join("bindings.rs"))
+        .expect("Couldn't write bindings!");
+
+    // === 3. Monitor changes ===
+    println!("cargo:rerun-if-changed={}", header_path);
     println!("cargo:rerun-if-changed=cpp_lib/src/my_math.c");
-    println!("cargo:rerun-if-changed=cpp_lib/include/my_math.h");
-    println!("cargo:rerun-if-changed=cpp_lib/CMakeLists.txt");
 }

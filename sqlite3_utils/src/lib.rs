@@ -3,6 +3,7 @@ use rusqlite::Connection;
 
 pub mod db_control;
 pub mod ffi;
+pub mod bindings;
 
 // --- Enums & Structs ---
 

@@ -55,24 +55,20 @@ fn test_database_lifecycle() {
     assert_eq!(res, 0);
 }
 
-// rust call c/cpp
-use std::os::raw::c_int;
-
-// 1. Declare the external interface
-unsafe extern "C" {
-    // Match the signature in my_math.h
-    unsafe fn fast_add(a: c_int, b: c_int) -> c_int;
-}
+// Introduce generated binding code
+// Note: bindings.rs is generated in the OUT_DIR directory and must be included! Macro import
+// include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
+use sqlite3_utils::bindings::*;
 
 #[test]
 fn test_c_math_library() {
     let x = 10;
     let y = 20;
 
-    // 2. Wrap the unsafe C call
+    // Bindgen will automatically generate a Rust function with the same name based on the C function name
+    // By default, it is still unsafe
     let result = unsafe { fast_add(x, y) };
 
-    println!("Result from C: {}", result);
+    println!("Result from C using Bindgen: {}", result);
     assert_eq!(result, 30);
 }
-

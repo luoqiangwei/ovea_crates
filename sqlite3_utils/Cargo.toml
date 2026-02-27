@@ -14,6 +14,7 @@ criterion = "0.5"
 
 [build-dependencies]
 cmake = "0.1" # Bridge for running CMake during cargo build
+bindgen = "0.72.1"
 
 [lib]
 # "cdylib" generates a dynamic library for C/C++ to use
