@@ -12,6 +12,9 @@ libc = "0.2"
 # Criterion for benchmarking
 criterion = "0.5"
 
+[build-dependencies]
+cmake = "0.1" # Bridge for running CMake during cargo build
+
 [lib]
 # "cdylib" generates a dynamic library for C/C++ to use
 # "staticlib" generates a static library

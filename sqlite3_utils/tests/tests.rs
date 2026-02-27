@@ -54,3 +54,25 @@ fn test_database_lifecycle() {
     let res = db.close(None);
     assert_eq!(res, 0);
 }
+
+// rust call c/cpp
+use std::os::raw::c_int;
+
+// 1. Declare the external interface
+unsafe extern "C" {
+    // Match the signature in my_math.h
+    unsafe fn fast_add(a: c_int, b: c_int) -> c_int;
+}
+
+#[test]
+fn test_c_math_library() {
+    let x = 10;
+    let y = 20;
+
+    // 2. Wrap the unsafe C call
+    let result = unsafe { fast_add(x, y) };
+
+    println!("Result from C: {}", result);
+    assert_eq!(result, 30);
+}
+
